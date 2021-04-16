@@ -37,6 +37,8 @@ class Timer extends React.Component {
     return (
       <div>
         <br />
+        <p style={{fontSize: '25px'}}>Auction ending in...</p>
+
         🎉
         <div className="clock">
         {this.leadingZero(this.state.days)} {this.state.days === 1 ? 'Day' : 'Days'}
@@ -83,14 +85,16 @@ function App() {
         <br />
         <Typist
           sentences={[
-            'Interested in making a donation? 💸',
-            '100% of proceeds go to the Red-Cross Organization! 🎗️',
+            'Are you interested in making history with us? ❤️',
+            "Place a Bid on the 'CryptosBiggestWhale' NFT... 💸",
+            '100% of proceeds will go to vulnerable communities in Africa! 🌍',
             'Welcome to CryptosBiggestWhale.com 🐋']}
           loop={!true}
           typingSpeed={25}
           deletingSpeed={25}
           cursorColor='rgb(35, 104, 161)'
           cursorBlinkSpeed='500'
+          pauseTime={2400}
         />
         <Timer key={'April 30, 2021'} eventName={'Auction End'} eventDate={'April 30, 2021'} />
         <br />

@@ -16,7 +16,7 @@
   /* font-family: "Garamond"; */
   /* justify-content: center; */
   font-size: calc(35px + 2vmin);
-  color: white;
+  color: #f0f0f0;
 }
 
 .navbar-brand {
@@ -32,7 +32,7 @@
 
 .clock {
   display: inline;
-  color: #e2e2e2;
+  color: #f0f0f0;
   font-size: calc(20px + 2vmin);
   margin: 20px;
   padding-left:10px;
