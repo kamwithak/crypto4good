@@ -5,7 +5,7 @@ import Timer from './components/Timer'
 import { Navbar, Nav, Icon, Dropdown } from 'rsuite';
 import './App.css';
 import 'rsuite/dist/styles/rsuite-dark.css';
-// import { OpenSeaPort, Network } from 'opensea-js';
+import { OpenSeaPort, Network } from 'opensea-js';
 
 // import { web3Provider } from './constants';
 
@@ -16,7 +16,6 @@ class App extends React.Component {
   }
 
   async loadWeb3() {
-    // console.log('nice')
     if (window.ethereum) {
       window.ethereum.on('accountsChanged', (accounts) => {
         if (accounts.length > 0){
@@ -49,12 +48,22 @@ class App extends React.Component {
         this.setState({authenticated: true})
       }
     }
+    
+    const seaport = new OpenSeaPort(window.ethereum, {
+      networkName: Network.Main
+    })
+    const asset = await seaport.api.getAsset({
+      tokenAddress: "0x12f28e2106ce8fd8464885b80ea865e98b465149",
+      tokenId: 100030016
+    })
+    console.log(asset)
   }
 
   constructor(props) {
     super(props);
     this.state = {
       accountAddress: null,
+      seaport: null,
       authenticated: false
     }
     this.loadWeb3 = this.loadWeb3.bind(this)
@@ -108,9 +117,8 @@ class App extends React.Component {
           <br />
           <Typist
             sentences={[
-              'Welcome to CryptosBiggestWhale.com 🐋',
               '100% of proceeds will go to vulnerable communities in Africa! 🌍',
-              "Place your Bid today for the 'CryptosBiggestWhale' NFT... 💸"]}
+              'Welcome to CryptosBiggestWhale.com 🐋']}
             loop={!true}
             typingSpeed={15}
             deletingSpeed={13}
