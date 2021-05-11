@@ -1,18 +1,25 @@
-import React from 'react';
+import React, { Component }  from 'react';
 import Web3 from 'web3';
-import Typist from 'react-text-typist';
-import Timer from './components/Timer'
+import { Switch, Route } from 'react-router-dom';
 import { Navbar, Nav, Icon, Dropdown } from 'rsuite';
-import './App.css';
-import 'rsuite/dist/styles/rsuite-dark.css';
-import { OpenSeaPort, Network } from 'opensea-js';
 
-// import { web3Provider } from './constants';
+import HomePage from './components/HomePage';
+import CatalogPage from './components/CatalogPage';
+import WhaleTokensPage from './components/WhaleTokensPage';
+import DoesNotExistPage from './components/DoesNotExistPage';
 
-class App extends React.Component {
+class App extends Component {
 
   async componentWillMount() {
     this.loadWeb3()
+  }
+
+  async componentDidMount() {
+    const url = "https://api.randomuser.me/";
+    const resp = await fetch(url);
+    const data = await resp.json();
+    this.setState({person: data.results[0], loading: false})
+    console.log(this.state.person)
   }
 
   async loadWeb3() {
@@ -31,32 +38,15 @@ class App extends React.Component {
           console.log('disconnected all accounts')
         }
       })
-      // window.ethereum.on('chainChanged', (chainId) => {
-      //   if (chainId){
-      //     if (chainId == 4) {
-      //       this.postNotification("Connected to Rinkeby ⚡", "Interfacing with the Rinkeby Test Net", "success", 5500)
-      //     } else {
-      //       this.postNotification("Disconnected from Rinkeby ⚡", "Please use the Rinkeby Test Net", "danger", 5500)
-      //     }
-      //     this.setState({networkId: chainId})
-      //   }
-      // })
+
       window.web3 = new Web3(window.ethereum)
       const accounts = await window.web3.eth.getAccounts()
       if (accounts.length !== 0) {
         this.setState({accountAddress: accounts[0]})
         this.setState({authenticated: true})
       }
-    }
     
-    const seaport = new OpenSeaPort(window.ethereum, {
-      networkName: Network.Main
-    })
-    const asset = await seaport.api.getAsset({
-      tokenAddress: "0x12f28e2106ce8fd8464885b80ea865e98b465149",
-      tokenId: 100030016
-    })
-    console.log(asset)
+    }  
   }
 
   constructor(props) {
@@ -64,7 +54,9 @@ class App extends React.Component {
     this.state = {
       accountAddress: null,
       seaport: null,
-      authenticated: false
+      authenticated: false,
+      loading: true,
+      person: null
     }
     this.loadWeb3 = this.loadWeb3.bind(this)
   }
@@ -94,9 +86,9 @@ class App extends React.Component {
           </Navbar.Header>
           <Navbar.Body>
             <Nav>
-              <Nav.Item icon={<Icon icon="home" />} >Home</Nav.Item>
-              <Nav.Item>Getting Started</Nav.Item>
-              <Nav.Item>NFT Auction</Nav.Item>
+              <Nav.Item href="/" icon={<Icon icon="home" />} >Home</Nav.Item>
+              <Nav.Item href="/videos" >Videos</Nav.Item>
+              <Nav.Item href="/whale-tokens" >WhaleTokens</Nav.Item>
               <Dropdown title="Social Media">
                 <Dropdown.Item>Twitter</Dropdown.Item>
                 <Dropdown.Item>FaceBook</Dropdown.Item>
@@ -113,25 +105,14 @@ class App extends React.Component {
             </Nav>
           </Navbar.Body>
         </Navbar>
-        <header className="App-header">
-          <br />
-          <Typist
-            sentences={[
-              '100% of proceeds will go to vulnerable communities in Africa! 🌍',
-              'Welcome to CryptosBiggestWhale.com 🐋']}
-            loop={!true}
-            typingSpeed={15}
-            deletingSpeed={13}
-            cursorColor='rgb(35, 104, 161)'
-            cursorBlinkSpeed='500'
-            pauseTime={2400}
-          />
-          <Timer key={'April 30, 2021'} eventName={'Auction End'} eventDate={'April 30, 2021'} />
-          <br />
-          <div className="nftBorder">
-            <nft-card contractAddress="0x12f28e2106ce8fd8464885b80ea865e98b465149" tokenId="100030016"> </nft-card>
-          </div>
-        </header>
+            
+        <Switch>
+          <Route exact path={'/'} component={() =>  <HomePage/>} />
+          <Route path='/videos' component={() => <CatalogPage/>} />
+          <Route path='/whale-tokens' component={() => <WhaleTokensPage person={this.state.person} loading={this.state.loading}/>} />
+          <Route path='/*' component={() => <DoesNotExistPage />} />
+        </Switch>
+      
       </div>
     );
   }

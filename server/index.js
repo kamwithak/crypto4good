@@ -1,4 +1,5 @@
 const express = require('express');
+// const cors = require('cors');
 const path = require('path');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
@@ -22,6 +23,9 @@ if (!isDev && cluster.isMaster) {
 } else {
   const app = express();
 
+  // app.use(cors());
+  app.use(express.json());
+
   // Priority serve any static files.
   app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
@@ -29,6 +33,12 @@ if (!isDev && cluster.isMaster) {
   app.get('/api', function (req, res) {
     res.set('Content-Type', 'application/json');
     res.send('{"message":"Hello from the custom server!"}');
+  });
+
+  app.post('/payload', function(req, res) {
+    const person = req.body
+    console.log(person.name)
+    res.end('It worked!');
   });
 
   // All remaining requests return the React app, so it can handle routing.
