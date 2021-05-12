@@ -1,11 +1,15 @@
 const express = require('express');
-// const cors = require('cors');
+const cors = require('cors');
 const path = require('path');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
 
 const isDev = process.env.NODE_ENV !== 'production';
 const PORT = process.env.PORT || 5000;
+
+
+// Require Route
+const api = require('./routes/routes');
 
 // Multi-process to utilize all CPU cores.
 if (!isDev && cluster.isMaster) {
@@ -25,9 +29,11 @@ if (!isDev && cluster.isMaster) {
 
   // app.use(cors());
   app.use(express.json());
+  app.use('/api/v1/', api);
 
   // Priority serve any static files.
   app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
+  
 
   // Answer API requests.
   app.get('/api', function (req, res) {
@@ -38,7 +44,7 @@ if (!isDev && cluster.isMaster) {
   app.post('/payload', function(req, res) {
     const person = req.body
     console.log(person.name)
-    res.end('It worked!');
+    res.json('It worked!');
   });
 
   // All remaining requests return the React app, so it can handle routing.

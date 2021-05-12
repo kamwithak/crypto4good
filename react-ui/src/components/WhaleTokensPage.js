@@ -3,19 +3,23 @@ import { Button, Loader } from 'rsuite';
 
 class WhaleTokensPage extends Component {
 
-    // constructor(props) {
-    //     super(props);
-    // }
-
+    // USE AXIOS INSTEAD AND CLEAN UP BACKEND
     async postRequest() {
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify(this.props.person)
         };
         const respd = await fetch('/payload', requestOptions);
         const datas = await respd.json();
         console.log(datas)
+
+    }
+
+    async getRequest() {
+        const resp = await fetch('/api/v1/say-something')
+        const data = await resp.json();
+        console.log(data)
     }
 
     render() {
@@ -34,7 +38,15 @@ class WhaleTokensPage extends Component {
                                 <br />
                                 <img alt='...' src={this.props.person.picture.large}/>
                                 <br />
-                                <Button  appearance={'ghost'} color={'cyan'} onClick={() => this.postRequest()}>Send to Backend</Button>                        
+                                <Button
+                                    appearance={'ghost'}
+                                    color={'cyan'}
+                                    onClick={() => {
+                                        this.postRequest()
+                                        this.getRequest()
+                                    }}>
+                                Send to Backend
+                                </Button>
                             </div>
                         )
                     }
