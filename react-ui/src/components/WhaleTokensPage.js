@@ -3,7 +3,7 @@ import { Button, Loader } from 'rsuite';
 
 class WhaleTokensPage extends Component {
 
-    // USE AXIOS INSTEAD AND CLEAN UP BACKEND
+    // USE AXIOS INSTEAD AND CLEAN UP BACKEND + add database
     async postRequest() {
         const requestOptions = {
             method: 'POST',
