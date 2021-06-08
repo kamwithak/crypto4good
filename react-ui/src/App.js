@@ -1,7 +1,7 @@
 import React, { Component }  from 'react';
 import Web3 from 'web3';
 import { Switch, Route } from 'react-router-dom';
-import { Navbar, Nav, Icon, Dropdown } from 'rsuite';
+import {Navbar, Nav, Icon, Dropdown} from 'rsuite';
 
 import HomePage from './components/HomePage';
 import CatalogPage from './components/CatalogPage';
