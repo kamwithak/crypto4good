@@ -81,6 +81,7 @@ class App extends Component {
   render(){
   return (
       <div className="App">
+        <br />
         <Navbar appearance={'subtle'}>
           <Navbar.Header>
             <a href='/' className="navbar-brand"><h3><span role="img" aria-label="CBW">🐋</span></h3></a>
