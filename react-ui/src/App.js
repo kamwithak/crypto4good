@@ -8,6 +8,7 @@ import CatalogPage from './components/CatalogPage';
 import WhaleTokensPage from './components/WhaleTokensPage';
 import DoesNotExistPage from './components/DoesNotExistPage';
 
+// heyy
 class App extends Component {
 
   async componentWillMount() {
